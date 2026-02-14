@@ -111,7 +111,7 @@
               # Install desktop file and substitute paths
               install -Dm644 data/com.stremio.Stremio.desktop $out/share/applications/com.stremio.Stremio.desktop
               substituteInPlace $out/share/applications/com.stremio.Stremio.desktop \
-                --replace "Exec=stremio" "Exec=$out/bin/stremio-linux-shell"
+                --replace "stremio" "$out/bin/stremio-linux-shell"
 
               # Install icons
               for size in 16 22 24 32 48 64 128 256; do
