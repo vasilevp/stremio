@@ -144,6 +144,10 @@
             };
           };
         };
+
+        overlays.default = final: prev: {
+          stremio = self.packages.${system}.default;
+        };
       }
     );
 }
