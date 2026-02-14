@@ -144,35 +144,6 @@
             };
           };
         };
-
-        devShells = {
-          build = pkgs.mkShell {
-            buildInputs = with pkgs; [
-              rustToolchain
-              pkg-config
-              mpv
-              openssl
-              gtk3
-            ];
-          };
-
-          default = pkgs.mkShell {
-            buildInputs = with pkgs;
-              [
-                nodejs
-              ]
-              ++ runtimeLibs;
-
-            shellHook = ''
-              # Add system NVIDIA libraries for CUDA support (matches system driver version)
-              if [ -d /run/opengl-driver/lib ]; then
-                export LD_LIBRARY_PATH="$PWD/vendor/cef:/run/opengl-driver/lib:${pkgs.lib.makeLibraryPath runtimeLibs}"
-              else
-                export LD_LIBRARY_PATH="$PWD/vendor/cef:${pkgs.lib.makeLibraryPath runtimeLibs}"
-              fi
-            '';
-          };
-        };
       }
     );
 }
