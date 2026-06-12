@@ -108,18 +108,17 @@
               # Install server.js
               install -Dm644 data/server.js $out/bin/server.js
 
-              # Install desktop file and substitute paths
+              # Install desktop file and point Exec at the real binary.
+              # Only rewrite the Exec command — a bare "stremio" replace would also
+              # mangle Icon=com.stremio.Stremio and MimeType=x-scheme-handler/stremio.
               install -Dm644 data/com.stremio.Stremio.desktop $out/share/applications/com.stremio.Stremio.desktop
               substituteInPlace $out/share/applications/com.stremio.Stremio.desktop \
-                --replace "stremio" "$out/bin/stremio-linux-shell"
+                --replace 'Exec=sh -c "stremio -o' "Exec=sh -c \"$out/bin/stremio-linux-shell -o"
 
-              # Install icons
-              for size in 16 22 24 32 48 64 128 256; do
-                if [ -f data/icons/hicolor/''${size}x''${size}/apps/com.stremio.Stremio.png ]; then
-                  install -Dm644 data/icons/hicolor/''${size}x''${size}/apps/com.stremio.Stremio.png \
-                    $out/share/icons/hicolor/''${size}x''${size}/apps/com.stremio.Stremio.png
-                fi
-              done
+              # Install the scalable app icon. Upstream ships a single SVG
+              # (not sized PNGs), matching the desktop file's Icon=com.stremio.Stremio.
+              install -Dm644 data/icons/com.stremio.Stremio.svg \
+                $out/share/icons/hicolor/scalable/apps/com.stremio.Stremio.svg
 
               # Install metainfo
               if [ -f data/com.stremio.Stremio.metainfo.xml ]; then
